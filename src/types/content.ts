@@ -86,10 +86,28 @@ export interface Education {
   logoUrl?: string | null
 }
 
+export type SkillCategory =
+  | 'Language'
+  | 'Engine'
+  | 'AR/VR'
+  | 'Web'
+  | 'Mobile'
+  | 'Tools'
+  | 'Project Management'
+  | 'Communication'
+  | 'DevOps'
+  | 'Database'
+  | 'IDE'
+  | 'Principle'
+  | 'Soft Skills'
+  | 'Other'
+
 export interface Skill {
   id: string
   name: string
-  category: string
+  category: SkillCategory
+  description: LocalizedText
+  iconKey?: string | null
   sortOrder: number
 }
 
