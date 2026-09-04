@@ -15,7 +15,7 @@ import {
   ServerCog,
   Smartphone,
   Sparkles,
-  TerminalSquare,
+  SquareTerminal,
   UsersRound,
   Workflow,
   Wrench,
@@ -37,7 +37,7 @@ function iconForCategory(category: string): IconType {
   if (value.includes('tool')) return Wrench
   if (value.includes('devops') || value.includes('ci/cd')) return Workflow
   if (value.includes('database') || value.includes('backend')) return Database
-  if (value.includes('ide') || value.includes('editor')) return TerminalSquare
+  if (value.includes('ide') || value.includes('editor')) return SquareTerminal
   if (value.includes('principle') || value.includes('architecture')) return BadgeCheck
   if (value.includes('soft')) return UsersRound
   return Sparkles
