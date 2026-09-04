@@ -101,7 +101,6 @@ export type SkillCategory =
   | 'Principle'
   | 'Soft Skills'
   | 'Other'
-  // Legacy fallback aliases kept only so the static emergency data remains build-safe.
   | 'Programming Languages'
   | 'Game Development'
 
@@ -131,6 +130,7 @@ export interface Award {
   issuer?: string | null
   awardDate?: string | null
   description?: LocalizedText | null
+  proofImageUrls?: string[]
   certificateIds: string[]
 }
 
