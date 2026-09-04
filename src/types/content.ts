@@ -45,8 +45,8 @@ export interface BlogPost {
   content: LocalizedText
   tags: string[]
   coverImageUrl?: string | null
-  galleryUrls: string[]
-  videoUrls: string[]
+  galleryUrls?: string[]
+  videoUrls?: string[]
   featured: boolean
   publishedAt: string
   views: number
