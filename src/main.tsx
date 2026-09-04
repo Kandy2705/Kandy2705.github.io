@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './i18n'
 import './styles/index.css'
+import './styles/hero-overrides.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
