@@ -19,7 +19,7 @@ export function AdminExperiencePage() {
 }
 
 export function AdminEducationPage() {
-  return <SimpleCrudPage table="education" title="Education" displayField="institution" fields={[
+  return <SimpleCrudPage table="education" title="Education" subtitle="You can store both grading scales and choose whether the public page shows GPA /4, score /10, or both." displayField="institution" fields={[
     { key: 'institution', label: 'Institution', required: true },
     { key: 'degree_en', label: 'Degree — English' },
     { key: 'degree_vi', label: 'Degree — Vietnamese' },
@@ -28,7 +28,13 @@ export function AdminEducationPage() {
     { key: 'start_date', label: 'Start date', type: 'date' },
     { key: 'end_date', label: 'End date', type: 'date' },
     { key: 'current', label: 'Currently studying', type: 'checkbox' },
-    { key: 'gpa', label: 'GPA / Score' },
+    { key: 'gpa_4', label: 'GPA (4.0 scale)', type: 'number', min: 0, max: 4, step: 0.01, placeholder: '3.20' },
+    { key: 'score_10', label: 'Score (10-point scale)', type: 'number', min: 0, max: 10, step: 0.01, placeholder: '8.20' },
+    { key: 'score_display', label: 'Public score display', type: 'select', options: [
+      { value: 'both', label: 'Show both — GPA /4 + Score /10' },
+      { value: 'gpa4', label: 'Show GPA /4 only' },
+      { value: 'score10', label: 'Show Score /10 only' },
+    ] },
     { key: 'description_en', label: 'Description — English', type: 'textarea' },
     { key: 'description_vi', label: 'Description — Vietnamese', type: 'textarea' },
     { key: 'thesis_en', label: 'Graduation thesis — English', type: 'textarea' },
