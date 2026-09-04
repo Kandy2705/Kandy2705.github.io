@@ -1,0 +1,30 @@
+name: Build Vite portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: cp vite-index.html index.html
+      - run: npm run build
+      - run: rsync -a dist/ ./
+      - run: |
+          git config user.name pages-builder
+          git config user.email pages-builder@users.noreply.github.com
+          git add -A
+          git diff --cached --quiet || git commit -m 'Publish Vite build'
+          git push
