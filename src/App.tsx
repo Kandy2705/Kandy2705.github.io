@@ -22,6 +22,7 @@ import {
 } from '@/features/admin/AdminSimplePages'
 import { PublicLayout } from '@/layouts/PublicLayout'
 import { AboutPage } from '@/pages/AboutPage'
+import { AchievementsPage } from '@/pages/AchievementsPage'
 import { BlogDetailPage } from '@/pages/BlogDetailPage'
 import { BlogPage } from '@/pages/BlogPage'
 import { EducationPage } from '@/pages/EducationPage'
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="projects/:slug" element={<ProjectDetailPage />} />
           <Route path="experience" element={<ExperiencePage />} />
           <Route path="education" element={<EducationPage />} />
+          <Route path="achievements" element={<AchievementsPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<BlogDetailPage />} />
           <Route path="404" element={<NotFoundPage />} />
