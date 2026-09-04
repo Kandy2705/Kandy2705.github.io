@@ -117,6 +117,7 @@ const mapAward = (row: any): Award => ({
   awardDate: row.award_date,
   description: row.description_en || row.description_vi ? localized(row.description_en, row.description_vi) : null,
   proofImageUrls: row.proof_image_urls || [],
+  sourceUrl: row.source_url || null,
   certificateIds: [],
 })
 
