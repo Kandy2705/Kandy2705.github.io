@@ -1,0 +1,34 @@
+name: Restore React source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore portfolio React source
+        run: |
+          set -euo pipefail
+          cat .bootstrap/part-00 .bootstrap/part-01 .bootstrap/part-02 .bootstrap/part-03 .bootstrap/part-04 > /tmp/portfolio-source.b64
+          test "$(wc -c < /tmp/portfolio-source.b64)" -eq 77628
+          base64 --decode /tmp/portfolio-source.b64 > /tmp/portfolio-source.tar.gz
+          echo "19e513b887814fefea3f364f2c4d7eb022adddd01ebf09d873a71230830bbbd2  /tmp/portfolio-source.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/portfolio-source.tar.gz
+          rm -rf .bootstrap
+          rm -f .github/workflows/deploy.yml
+      - name: Commit restored source
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Restore React TypeScript portfolio source"
+          git push
