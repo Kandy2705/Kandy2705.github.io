@@ -61,7 +61,7 @@ export function AdminEducationPage() {
 }
 
 export function AdminSkillsPage() {
-  return <SimpleCrudPage table="skills" title="Skills" subtitle="Categories are fixed to keep the public layout consistent. Add EN/VI descriptions so visitors can hover a skill and understand what it is." displayField="name" orderBy="sort_order" fields={[
+  return <SimpleCrudPage table="skills" title="Skills" subtitle="Categories are fixed to keep the public layout consistent. Add EN/VI descriptions so visitors can hover a skill and understand what it is." displayField="name" orderBy="sort_order" uniqueBy="name" fields={[
     { key: 'name', label: 'Skill', required: true },
     { key: 'category', label: 'Category', type: 'select', required: true, options: skillCategoryOptions },
     { key: 'description_en', label: 'Description — English', type: 'textarea', placeholder: 'What this tool/skill is and how it is used...' },
