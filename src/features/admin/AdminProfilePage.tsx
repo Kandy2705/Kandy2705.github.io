@@ -19,6 +19,8 @@ const empty = {
   github: '',
   linkedin: '',
   facebook: '',
+  tiktok_url: '',
+  tiktok_followers: 0,
   profile_image_url: '',
   cv_en_url: '',
   cv_vi_url: '',
@@ -103,6 +105,8 @@ export function AdminProfilePage() {
           {input('github', 'GitHub')}
           {input('linkedin', 'LinkedIn')}
           {input('facebook', 'Facebook')}
+          {input('tiktok_url', 'TikTok URL')}
+          <label className="admin-label">TikTok followers<input className="admin-input" type="number" min="0" value={form.tiktok_followers} onChange={(e) => setForm((current) => ({ ...current, tiktok_followers: Number(e.target.value || 0) }))} /></label>
         </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
