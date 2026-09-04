@@ -116,7 +116,8 @@ const mapAward = (row: any): Award => ({
   issuer: row.issuer,
   awardDate: row.award_date,
   description: row.description_en || row.description_vi ? localized(row.description_en, row.description_vi) : null,
-  certificateIds: row.award_certificates?.map((x: any) => x.certificate_id) || [],
+  proofImageUrls: row.proof_image_urls || [],
+  certificateIds: [],
 })
 
 const mapResearch = (row: any): ResearchItem => ({
@@ -218,7 +219,7 @@ export async function getCertificates(): Promise<Certificate[]> {
 
 export async function getAwards(): Promise<Award[]> {
   if (!isSupabaseConfigured) return fallbackAwards
-  const { data, error } = await supabase.from('awards').select('*, award_certificates(certificate_id)').order('award_date', { ascending: false })
+  const { data, error } = await supabase.from('awards').select('*').order('award_date', { ascending: false })
   if (error) return fallbackAwards
   return (data || []).map(mapAward)
 }
