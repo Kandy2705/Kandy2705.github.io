@@ -131,6 +131,7 @@ export interface Award {
   awardDate?: string | null
   description?: LocalizedText | null
   proofImageUrls?: string[]
+  sourceUrl?: string | null
   certificateIds: string[]
 }
 
