@@ -106,7 +106,7 @@ export interface Skill {
   id: string
   name: string
   category: SkillCategory
-  description: LocalizedText
+  description?: LocalizedText
   iconKey?: string | null
   sortOrder: number
 }
