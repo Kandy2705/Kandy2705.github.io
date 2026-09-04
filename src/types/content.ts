@@ -65,6 +65,8 @@ export interface Experience {
   companyUrl?: string | null
 }
 
+export type EducationScoreDisplay = 'both' | 'gpa4' | 'score10'
+
 export interface Education {
   id: string
   institution: string
@@ -74,6 +76,9 @@ export interface Education {
   endDate?: string | null
   current: boolean
   gpa?: string | null
+  gpa4?: number | null
+  score10?: number | null
+  scoreDisplay?: EducationScoreDisplay
   description?: LocalizedText | null
   thesis?: LocalizedText | null
   logoUrl?: string | null
