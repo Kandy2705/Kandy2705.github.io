@@ -23,6 +23,7 @@ import type {
   ResearchItem,
   SiteProfile,
   Skill,
+  SkillCategory,
 } from '@/types/content'
 
 const localized = (en?: string | null, vi?: string | null) => ({ en: en || '', vi: vi || en || '' })
@@ -198,7 +199,14 @@ export async function getSkills(): Promise<Skill[]> {
   if (!isSupabaseConfigured) return fallbackSkills
   const { data, error } = await supabase.from('skills').select('*').order('sort_order')
   if (error) return fallbackSkills
-  return (data || []).map((row: any) => ({ id: row.id, name: row.name, category: row.category, sortOrder: row.sort_order || 0 }))
+  return (data || []).map((row: any) => ({
+    id: row.id,
+    name: row.name,
+    category: row.category as SkillCategory,
+    description: localized(row.description_en, row.description_vi),
+    iconKey: row.icon_key,
+    sortOrder: row.sort_order || 0,
+  }))
 }
 
 export async function getCertificates(): Promise<Certificate[]> {
