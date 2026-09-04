@@ -58,7 +58,7 @@ export function AchievementsPage() {
     preview: lang === 'vi' ? 'Xem bằng' : 'Preview',
     verify: lang === 'vi' ? 'Xác minh' : 'Verify',
     proof: lang === 'vi' ? 'Xem minh chứng' : 'View proof',
-    noProof: lang === 'vi' ? 'Chưa có minh chứng' : 'No proof added yet',
+    noProof: lang === 'vi' ? 'Chưa có ảnh minh chứng' : 'No proof image yet',
     empty: lang === 'vi' ? 'Không tìm thấy nội dung phù hợp.' : 'No matching credentials found.',
   }
 
@@ -121,22 +121,33 @@ export function AchievementsPage() {
             const proofCount = award.proofImageUrls?.length || 0
             return (
               <article key={`award-${award.id}`} className="glass-panel group overflow-hidden rounded-2xl border border-white/[.07] transition duration-300 hover:-translate-y-1 hover:border-pink-300/25">
-                {proofCount > 0 ? (
-                  <button type="button" onClick={() => openAward(award)} className="block w-full text-left">
-                    <div className="relative aspect-[16/7] overflow-hidden border-b border-white/[.06] bg-black/25">
+                <button type="button" onClick={() => openAward(award)} disabled={!proofCount} className="block w-full text-left disabled:cursor-default">
+                  <div className="relative aspect-[16/7] overflow-hidden border-b border-white/[.06] bg-black/25">
+                    {proofCount > 0 ? (
                       <img src={award.proofImageUrls![0]} alt={award.title[lang]} className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
-                      <span className="absolute left-3 top-3 rounded-full border border-pink-300/20 bg-black/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[.16em] text-pink-200 backdrop-blur-md">{labels.awards}</span>
-                      {proofCount > 1 && <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/65 px-2.5 py-1 text-[10px] text-white/70 backdrop-blur-md"><Images size={12} /> {proofCount}</span>}
-                    </div>
-                    <div className="p-5"><h2 className="font-display text-xl font-semibold text-white transition group-hover:text-pink-100">{award.title[lang]}</h2>{award.issuer && <p className="mt-2 text-sm text-white/48">{award.issuer}</p>}{award.description?.[lang] && <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/40">{award.description[lang]}</p>}<div className="mt-4 flex items-center justify-between text-xs"><span className="text-white/30">{formatDate(award.awardDate, lang)}</span><span className="text-pink-200">{labels.proof}</span></div></div>
-                  </button>
-                ) : (
-                  <div className="p-5">
-                    <div className="flex items-start gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-pink-300/15 bg-pink-500/[.06] text-pink-300"><Award size={22} /></span><div><span className="text-[10px] font-semibold uppercase tracking-[.18em] text-pink-300/75">{labels.awards}</span><h2 className="mt-1.5 font-display text-xl font-semibold">{award.title[lang]}</h2>{award.issuer && <p className="mt-2 text-sm text-white/48">{award.issuer}</p>}</div></div>
-                    {award.description?.[lang] && <p className="mt-4 line-clamp-3 text-sm leading-6 text-white/45">{award.description[lang]}</p>}
-                    <div className="mt-5 flex items-center justify-between border-t border-white/[.06] pt-3 text-xs"><span className="text-white/30">{formatDate(award.awardDate, lang)}</span><span className="text-white/25">{labels.noProof}</span></div>
+                    ) : (
+                      <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_center,rgba(255,79,149,.13),transparent_68%)]">
+                        <Award size={42} strokeWidth={1.25} className="text-pink-300/75" />
+                      </div>
+                    )}
+                    <span className="absolute left-3 top-3 rounded-full border border-pink-300/20 bg-black/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[.16em] text-pink-200 backdrop-blur-md">{labels.awards}</span>
+                    {proofCount > 1 && <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-black/65 px-2.5 py-1 text-[10px] text-white/70 backdrop-blur-md"><Images size={12} /> {proofCount}</span>}
                   </div>
-                )}
+                  <div className="p-5">
+                    <h2 className="font-display text-xl font-semibold text-white transition group-hover:text-pink-100">{award.title[lang]}</h2>
+                    {award.issuer && <p className="mt-2 text-sm text-white/48">{award.issuer}</p>}
+                    {award.description?.[lang] && <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/40">{award.description[lang]}</p>}
+                    <p className="mt-3 text-xs text-white/30">{formatDate(award.awardDate, lang)}</p>
+                  </div>
+                </button>
+                <div className="flex items-center gap-2 border-t border-white/[.06] px-5 py-3">
+                  {proofCount > 0 ? (
+                    <button onClick={() => openAward(award)} className="inline-flex items-center gap-2 text-xs font-medium text-pink-200 transition hover:text-pink-100"><ShieldCheck size={14} /> {labels.proof}</button>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 text-xs text-white/25"><ShieldCheck size={14} /> {labels.noProof}</span>
+                  )}
+                  {proofCount > 1 && <span className="ml-auto inline-flex items-center gap-1.5 text-xs text-white/35"><Images size={13} /> {proofCount}</span>}
+                </div>
               </article>
             )
           })}
