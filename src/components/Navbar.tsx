@@ -11,6 +11,7 @@ const links = [
   ['/projects', 'nav.projects'],
   ['/experience', 'nav.experience'],
   ['/education', 'nav.education'],
+  ['/achievements', 'nav.achievements'],
   ['/blog', 'nav.blog'],
   ['/#contact', 'nav.contact'],
 ] as const
