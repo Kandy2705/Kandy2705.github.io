@@ -58,6 +58,7 @@ export function AchievementsPage() {
     preview: lang === 'vi' ? 'Xem bằng' : 'Preview',
     verify: lang === 'vi' ? 'Xác minh' : 'Verify',
     proof: lang === 'vi' ? 'Xem minh chứng' : 'View proof',
+    source: lang === 'vi' ? 'Xem bài công bố' : 'View source',
     noProof: lang === 'vi' ? 'Chưa có ảnh minh chứng' : 'No proof image yet',
     empty: lang === 'vi' ? 'Không tìm thấy nội dung phù hợp.' : 'No matching credentials found.',
   }
@@ -140,13 +141,16 @@ export function AchievementsPage() {
                     <p className="mt-3 text-xs text-white/30">{formatDate(award.awardDate, lang)}</p>
                   </div>
                 </button>
-                <div className="flex items-center gap-2 border-t border-white/[.06] px-5 py-3">
+                <div className="flex flex-wrap items-center gap-3 border-t border-white/[.06] px-5 py-3">
                   {proofCount > 0 ? (
                     <button onClick={() => openAward(award)} className="inline-flex items-center gap-2 text-xs font-medium text-pink-200 transition hover:text-pink-100"><ShieldCheck size={14} /> {labels.proof}</button>
                   ) : (
                     <span className="inline-flex items-center gap-2 text-xs text-white/25"><ShieldCheck size={14} /> {labels.noProof}</span>
                   )}
-                  {proofCount > 1 && <span className="ml-auto inline-flex items-center gap-1.5 text-xs text-white/35"><Images size={13} /> {proofCount}</span>}
+                  {award.sourceUrl && (
+                    <a href={award.sourceUrl} target="_blank" rel="noreferrer" className="ml-auto inline-flex items-center gap-1.5 text-xs text-white/42 transition hover:text-pink-200">{labels.source} <ExternalLink size={13} /></a>
+                  )}
+                  {proofCount > 1 && !award.sourceUrl && <span className="ml-auto inline-flex items-center gap-1.5 text-xs text-white/35"><Images size={13} /> {proofCount}</span>}
                 </div>
               </article>
             )
