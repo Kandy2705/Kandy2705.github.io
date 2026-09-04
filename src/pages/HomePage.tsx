@@ -37,7 +37,23 @@ import {
   useSiteProfile,
   useSkills,
 } from '@/hooks/useContent'
-import type { Certificate } from '@/types/content'
+import type { Certificate, Education } from '@/types/content'
+
+function educationScoreBadges(item: Education) {
+  const mode = item.scoreDisplay || 'both'
+  const scores: { label: string; value: string }[] = []
+
+  if ((mode === 'both' || mode === 'gpa4') && item.gpa4 != null) {
+    scores.push({ label: 'GPA', value: `${item.gpa4.toFixed(2).replace(/\.00$/, '')} / 4.0` })
+  }
+
+  if ((mode === 'both' || mode === 'score10') && item.score10 != null) {
+    scores.push({ label: '10-point', value: `${item.score10.toFixed(2).replace(/\.00$/, '')} / 10` })
+  }
+
+  if (!scores.length && item.gpa) scores.push({ label: 'Score', value: item.gpa })
+  return scores
+}
 
 export function HomePage() {
   const { i18n, t } = useTranslation()
@@ -169,11 +185,31 @@ export function HomePage() {
           <div>
             <SectionTitle align="left" eyebrow="Academic" title={t('sections.education')} />
             <div className="space-y-4">
-              {education.slice(0, 3).map((item) => (
-                <div key={item.id} className="glass-panel rounded-2xl p-5">
-                  <div className="flex gap-4"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-pink-500/8 text-pink-300"><GraduationCap size={20} /></span><div><h3 className="font-semibold">{item.institution}</h3><p className="mt-1 text-sm text-white/66">{item.degree[lang]}</p><p className="mt-2 text-xs text-pink-200/75">{item.gpa ? `GPA ${item.gpa}` : item.field[lang]}</p></div></div>
-                </div>
-              ))}
+              {education.slice(0, 3).map((item) => {
+                const scores = educationScoreBadges(item)
+                return (
+                  <div key={item.id} className="glass-panel rounded-2xl p-5">
+                    <div className="flex gap-4">
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-pink-500/8 text-pink-300"><GraduationCap size={20} /></span>
+                      <div>
+                        <h3 className="font-semibold">{item.institution}</h3>
+                        <p className="mt-1 text-sm text-white/66">{item.degree[lang]}</p>
+                        {scores.length ? (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {scores.map((score) => (
+                              <span key={`${item.id}-${score.label}`} className="rounded-lg border border-pink-300/12 bg-pink-500/[.035] px-2.5 py-1 text-xs text-pink-200/80">
+                                {score.label} {score.value}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="mt-2 text-xs text-pink-200/75">{item.field[lang]}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
             <div className="mt-5"><Link to="/education" className="outline-button inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm text-pink-200">{t('common.viewAll')} <ArrowRight size={15} /></Link></div>
           </div>
