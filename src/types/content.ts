@@ -162,6 +162,8 @@ export interface SiteProfile {
   github: string
   linkedin: string
   facebook: string
+  tiktokUrl?: string
+  tiktokFollowers?: number
   profileImageUrl: string
   cvEnUrl: string
   cvViUrl: string
