@@ -13,6 +13,7 @@ import {
   Mail,
   MapPin,
   Microscope,
+  Music2,
   Phone,
   Sparkles,
   UserRound,
@@ -53,6 +54,13 @@ function educationScoreBadges(item: Education) {
 
   if (!scores.length && item.gpa) scores.push({ label: 'Score', value: item.gpa })
   return scores
+}
+
+function formatFollowerCount(value?: number) {
+  if (!value) return ''
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1).replace(/\.0$/, '')}K`
+  return String(value)
 }
 
 export function HomePage() {
@@ -150,10 +158,24 @@ export function HomePage() {
             <div className="mb-3 text-xs font-semibold uppercase tracking-[.24em] text-pink-300">{t('sections.about')}</div>
             <h2 className="font-display text-4xl font-semibold">Crafting experiences through <span className="text-pink-300">code & curiosity.</span></h2>
           </div>
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             <div className="border-l border-pink-200/10 pl-4"><div className="text-xs text-white/40">Focus</div><div className="mt-1 font-semibold text-white/85">Unity · Game · AR/VR</div></div>
             <div className="border-l border-pink-200/10 pl-4"><div className="text-xs text-white/40">Based in</div><div className="mt-1 font-semibold text-white/85">{profile.city[lang]}</div></div>
             <div className="border-l border-pink-200/10 pl-4"><div className="text-xs text-white/40">Status</div><div className="mt-1 font-semibold text-pink-200">{t('hero.available')}</div></div>
+            {profile.tiktokUrl && profile.tiktokFollowers ? (
+              <a
+                href={profile.tiktokUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group border-l border-pink-200/10 pl-4 transition hover:border-pink-300/35"
+                aria-label="TikTok profile"
+              >
+                <div className="flex items-center gap-1.5 text-xs text-white/40"><Music2 size={13} className="text-pink-300" /> TikTok</div>
+                <div className="mt-1 font-semibold text-pink-200 transition group-hover:text-pink-100">
+                  {formatFollowerCount(profile.tiktokFollowers)} {lang === 'vi' ? 'người theo dõi' : 'followers'}
+                </div>
+              </a>
+            ) : null}
           </div>
         </div>
       </section>
