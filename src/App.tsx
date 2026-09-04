@@ -23,6 +23,7 @@ import { PublicLayout } from '@/layouts/PublicLayout'
 import { AboutPage } from '@/pages/AboutPage'
 import { BlogDetailPage } from '@/pages/BlogDetailPage'
 import { BlogPage } from '@/pages/BlogPage'
+import { EducationPage } from '@/pages/EducationPage'
 import { ExperiencePage } from '@/pages/ExperiencePage'
 import { HomePage } from '@/pages/HomePage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="projects/:slug" element={<ProjectDetailPage />} />
         <Route path="experience" element={<ExperiencePage />} />
+        <Route path="education" element={<EducationPage />} />
         <Route path="blog" element={<BlogPage />} />
         <Route path="blog/:slug" element={<BlogDetailPage />} />
         <Route path="404" element={<NotFoundPage />} />
