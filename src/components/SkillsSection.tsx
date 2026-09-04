@@ -1,5 +1,5 @@
-import type { ComponentType } from 'react'
 import { motion } from 'framer-motion'
+import type { LucideIcon } from 'lucide-react'
 import {
   BadgeCheck,
   Bot,
@@ -23,11 +23,9 @@ import {
 import { SectionTitle } from '@/components/SectionTitle'
 import type { Skill } from '@/types/content'
 
-type IconType = ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
-
 const categoryPriority = ['Programming Languages', 'Game Development', 'AR/VR', 'Web', 'Mobile', 'Tools', 'DevOps', 'Database', 'IDE', 'Principles', 'Soft Skills']
 
-function iconForCategory(category: string): IconType {
+function iconForCategory(category: string): LucideIcon {
   const value = category.toLowerCase()
   if (value.includes('programming') || value === 'language' || value.includes('languages')) return Braces
   if (value.includes('game') || value.includes('engine')) return Gamepad2
@@ -43,7 +41,7 @@ function iconForCategory(category: string): IconType {
   return Sparkles
 }
 
-function iconForSkill(name: string): IconType {
+function iconForSkill(name: string): LucideIcon {
   const value = name.toLowerCase()
   if (value.includes('unity') || value.includes('unreal')) return Gamepad2
   if (value.includes('c#') || value.includes('c/c++') || value.includes('c++') || value === 'c') return Code2
