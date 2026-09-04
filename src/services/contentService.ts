@@ -59,6 +59,8 @@ const mapBlog = (row: any): BlogPost => ({
   content: localized(row.content_en, row.content_vi),
   tags: row.tags || [],
   coverImageUrl: row.cover_image_url,
+  galleryUrls: row.gallery_urls || [],
+  videoUrls: row.video_urls || [],
   featured: Boolean(row.featured),
   publishedAt: row.published_at,
   views: Number(row.views || 0),
@@ -132,6 +134,14 @@ const mapLanguage = (row: any): LanguageItem => ({
   level: localized(row.level_en, row.level_vi),
 })
 
+function shouldCountView(kind: 'project' | 'blog', slug: string) {
+  if (typeof window === 'undefined') return true
+  const key = `portfolio:viewed:${kind}:${slug}`
+  if (sessionStorage.getItem(key)) return false
+  sessionStorage.setItem(key, '1')
+  return true
+}
+
 export async function getProjects(): Promise<Project[]> {
   if (!isSupabaseConfigured) return fallbackProjects
   const { data, error } = await supabase.from('projects').select('*').order('featured', { ascending: false }).order('start_date', { ascending: false })
@@ -147,7 +157,7 @@ export async function getProject(slug: string): Promise<Project | undefined> {
 }
 
 export async function incrementProjectView(slug: string) {
-  if (!isSupabaseConfigured) return
+  if (!isSupabaseConfigured || !shouldCountView('project', slug)) return
   await supabase.rpc('increment_project_view', { p_slug: slug })
 }
 
@@ -166,7 +176,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | undefined> {
 }
 
 export async function incrementBlogView(slug: string) {
-  if (!isSupabaseConfigured) return
+  if (!isSupabaseConfigured || !shouldCountView('blog', slug)) return
   await supabase.rpc('increment_blog_view', { p_slug: slug })
 }
 
