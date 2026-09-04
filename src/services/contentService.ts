@@ -253,6 +253,8 @@ export async function getSiteProfile(): Promise<SiteProfile> {
     github: data.github || fallbackSiteProfile.github,
     linkedin: data.linkedin || fallbackSiteProfile.linkedin,
     facebook: data.facebook || fallbackSiteProfile.facebook,
+    tiktokUrl: data.tiktok_url || fallbackSiteProfile.tiktokUrl,
+    tiktokFollowers: data.tiktok_followers == null ? fallbackSiteProfile.tiktokFollowers : Number(data.tiktok_followers),
     profileImageUrl: data.profile_image_url || fallbackSiteProfile.profileImageUrl,
     cvEnUrl: data.cv_en_url || fallbackSiteProfile.cvEnUrl,
     cvViUrl: data.cv_vi_url || fallbackSiteProfile.cvViUrl,
