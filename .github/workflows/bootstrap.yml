@@ -18,8 +18,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Restore portfolio source
         run: |
+          sha256sum .bootstrap/part-*
           cat .bootstrap/part-* > /tmp/portfolio-source.b64
-          base64 --decode /tmp/portfolio-source.b64 | tar -xzf -
+          base64 --decode /tmp/portfolio-source.b64 > /tmp/portfolio-source.tar.gz
+          sha256sum /tmp/portfolio-source.tar.gz
+          tar -xzf /tmp/portfolio-source.tar.gz
           rm -rf .bootstrap
           rm -f .github/workflows/bootstrap.yml
       - name: Commit source
