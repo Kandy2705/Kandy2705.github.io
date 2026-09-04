@@ -3,9 +3,7 @@ import { motion } from 'framer-motion'
 import {
   ArrowRight,
   Award,
-  BookOpen,
   BriefcaseBusiness,
-  Code2,
   Download,
   ExternalLink,
   Github,
@@ -26,6 +24,7 @@ import { CertificateModal } from '@/components/CertificateModal'
 import { ContactForm } from '@/components/ContactForm'
 import { ProjectCard } from '@/components/ProjectCard'
 import { SectionTitle } from '@/components/SectionTitle'
+import { SkillsSection } from '@/components/SkillsSection'
 import {
   useAwards,
   useBlogPosts,
@@ -58,11 +57,6 @@ export function HomePage() {
 
   const featuredProjects = useMemo(() => projects.filter((p) => p.featured).slice(0, 3), [projects])
   const featuredBlog = blog.slice(0, 2)
-  const skillGroups = useMemo(() => {
-    const groups = new Map<string, string[]>()
-    skills.forEach((skill) => groups.set(skill.category, [...(groups.get(skill.category) || []), skill.name]))
-    return [...groups.entries()]
-  }, [skills])
 
   if (!profile) return null
 
@@ -158,19 +152,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section-space pt-4">
-        <div className="site-container">
-          <SectionTitle eyebrow="Toolbox" title={t('sections.skills')} />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {skillGroups.map(([group, names], index) => (
-              <motion.div key={group} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .04 }} className="glass-panel rounded-2xl p-5">
-                <div className="mb-4 flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-pink-500/8 text-pink-300"><Code2 size={19} /></span><h3 className="font-semibold">{group}</h3></div>
-                <div className="flex flex-wrap gap-2">{names.map((name) => <span key={name} className="rounded-lg border border-white/7 bg-white/[.025] px-3 py-2 text-xs text-white/58">{name}</span>)}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SkillsSection skills={skills} />
 
       <section className="section-space pt-4">
         <div className="site-container grid gap-6 lg:grid-cols-2">
@@ -193,6 +175,7 @@ export function HomePage() {
                 </div>
               ))}
             </div>
+            <div className="mt-5"><Link to="/education" className="outline-button inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm text-pink-200">{t('common.viewAll')} <ArrowRight size={15} /></Link></div>
           </div>
         </div>
       </section>
