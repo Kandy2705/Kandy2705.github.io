@@ -1,0 +1,9 @@
+.hero-grid {
+  padding-top: 124px;
+}
+
+@media (max-width: 900px) {
+  .hero-grid {
+    padding-top: 126px;
+  }
+}
