@@ -31,8 +31,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 76% 18%, rgba(255, 47, 134, 0.14), transparent 24rem),
-    radial-gradient(circle at 12% 32%, rgba(255, 92, 159, 0.09), transparent 26rem),
+    radial-gradient(circle at 76% 18%, rgba(255, 47, 134, 0.18), transparent 24rem),
+    radial-gradient(circle at 12% 32%, rgba(255, 92, 159, 0.12), transparent 26rem),
     linear-gradient(180deg, #060507 0%, #0a070c 46%, #070609 100%);
   color: #fff7fb;
   overflow-x: hidden;
@@ -327,6 +327,19 @@ a {
 @keyframes floatUp {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+@media (pointer: fine) and (min-width: 768px) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  [role='button'] {
+    cursor: none !important;
+  }
 }
 
 @media (max-width: 900px) {
