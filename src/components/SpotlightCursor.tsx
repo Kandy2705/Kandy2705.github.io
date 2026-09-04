@@ -47,31 +47,34 @@ export function SpotlightCursor() {
     const spawn = (x: number, y: number, count = 2, burst = false) => {
       for (let i = 0; i < count; i += 1) {
         const angle = Math.random() * Math.PI * 2
-        const speed = burst ? .7 + Math.random() * 1.7 : .12 + Math.random() * .45
+        const speed = burst ? 0.7 + Math.random() * 1.45 : 0.08 + Math.random() * 0.34
+
         sparks.push({
-          x: x + (Math.random() - .5) * (burst ? 10 : 5),
-          y: y + (Math.random() - .5) * (burst ? 10 : 5),
-          vx: Math.cos(angle) * speed - .12,
-          vy: Math.sin(angle) * speed + (burst ? -.4 : .22),
-          size: burst ? 1.2 + Math.random() * 2.5 : .7 + Math.random() * 1.8,
-          life: burst ? 58 + Math.random() * 24 : 42 + Math.random() * 24,
-          maxLife: burst ? 82 : 66,
+          x: x + (Math.random() - 0.5) * (burst ? 10 : 6),
+          y: y + (Math.random() - 0.5) * (burst ? 10 : 6),
+          vx: Math.cos(angle) * speed - 0.06,
+          vy: Math.sin(angle) * speed + (burst ? -0.28 : 0.13),
+          size: burst ? 1.1 + Math.random() * 2.25 : 0.65 + Math.random() * 1.5,
+          life: burst ? 52 + Math.random() * 20 : 34 + Math.random() * 18,
+          maxLife: burst ? 72 : 52,
           twinkle: Math.random() * Math.PI * 2,
         })
       }
-      if (sparks.length > 150) sparks.splice(0, sparks.length - 150)
+
+      if (sparks.length > 135) sparks.splice(0, sparks.length - 135)
     }
 
     const move = (event: PointerEvent) => {
       const next = { x: event.clientX, y: event.clientY }
       setPos(next)
+
       const target = event.target as HTMLElement | null
       setHovering(Boolean(target?.closest('a,button,[role="button"],input,textarea,select,label')))
 
       const now = performance.now()
       const distance = Math.hypot(next.x - last.x, next.y - last.y)
-      if (distance > 4 && now - lastSpawn > 18) {
-        spawn(next.x - 7, next.y + 7, distance > 24 ? 3 : 2)
+      if (distance > 4 && now - lastSpawn > 22) {
+        spawn(next.x - 6, next.y + 7, distance > 24 ? 3 : 2)
         lastSpawn = now
       }
       last = next
@@ -79,38 +82,43 @@ export function SpotlightCursor() {
 
     const down = (event: PointerEvent) => {
       setPressed(true)
-      spawn(event.clientX, event.clientY, 14, true)
+      spawn(event.clientX, event.clientY, 12, true)
     }
+
     const up = () => setPressed(false)
 
     const drawSpark = (spark: Spark, alpha: number) => {
-      const pulse = .65 + Math.sin(spark.twinkle + spark.life * .24) * .35
+      const pulse = 0.7 + Math.sin(spark.twinkle + spark.life * 0.2) * 0.3
       const radius = spark.size * pulse
+
       ctx.save()
       ctx.translate(spark.x, spark.y)
       ctx.rotate(Math.PI / 4)
       ctx.globalAlpha = alpha
-      ctx.shadowColor = 'rgba(255,72,154,.95)'
-      ctx.shadowBlur = 9 + spark.size * 3
-      ctx.fillStyle = spark.size > 1.55 ? '#ffd2e5' : '#ff72b1'
-      ctx.fillRect(-radius / 2, -radius * 1.35, radius, radius * 2.7)
-      ctx.fillRect(-radius * 1.35, -radius / 2, radius * 2.7, radius)
+      ctx.shadowColor = 'rgba(255,79,157,.82)'
+      ctx.shadowBlur = 7 + spark.size * 2.4
+      ctx.fillStyle = spark.size > 1.5 ? '#ffe3ef' : '#ff8fc1'
+      ctx.fillRect(-radius / 2, -radius * 1.25, radius, radius * 2.5)
+      ctx.fillRect(-radius * 1.25, -radius / 2, radius * 2.5, radius)
       ctx.restore()
     }
 
     const render = () => {
       ctx.clearRect(0, 0, width, height)
+
       for (let i = sparks.length - 1; i >= 0; i -= 1) {
         const spark = sparks[i]
         spark.x += spark.vx
         spark.y += spark.vy
-        spark.vx *= .985
-        spark.vy += .012
+        spark.vx *= 0.986
+        spark.vy += 0.009
         spark.life -= 1
+
         const alpha = Math.max(0, spark.life / spark.maxLife)
         if (spark.life <= 0) sparks.splice(i, 1)
-        else drawSpark(spark, alpha * .82)
+        else drawSpark(spark, alpha * 0.72)
       }
+
       raf = requestAnimationFrame(render)
     }
 
@@ -134,45 +142,90 @@ export function SpotlightCursor() {
 
   return (
     <>
-      <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-[78] hidden md:block" aria-hidden="true" />
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none fixed inset-0 z-[78] hidden md:block"
+        aria-hidden="true"
+      />
 
       <div
-        className="pointer-events-none fixed z-[3] hidden h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full md:block"
+        className="pointer-events-none fixed z-[3] hidden h-[14rem] w-[14rem] -translate-x-1/2 -translate-y-1/2 rounded-full md:block"
         style={{
           left: pos.x,
           top: pos.y,
-          background: 'radial-gradient(circle, rgba(255,89,164,.16) 0%, rgba(255,47,134,.075) 34%, rgba(151,35,99,.025) 56%, transparent 73%)',
-          filter: 'blur(15px)',
+          background: 'radial-gradient(circle, rgba(255,102,174,.07) 0%, rgba(255,55,143,.03) 38%, rgba(145,35,96,.012) 58%, transparent 74%)',
+          filter: 'blur(16px)',
           mixBlendMode: 'screen',
         }}
         aria-hidden="true"
       />
+
+      {hovering && (
+        <div
+          className="pointer-events-none fixed z-[80] hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pink-100/30 md:block"
+          style={{
+            left: pos.x,
+            top: pos.y,
+            background: 'radial-gradient(circle at 36% 28%, rgba(255,255,255,.13), rgba(255,115,181,.065) 46%, rgba(255,61,146,.025) 70%)',
+            boxShadow: '0 0 14px rgba(255,78,157,.15), inset 0 0 13px rgba(255,255,255,.04)',
+            backdropFilter: 'blur(3px)',
+          }}
+          aria-hidden="true"
+        />
+      )}
 
       <div
         className="pointer-events-none fixed z-[82] hidden md:block"
         style={{
           left: pos.x,
           top: pos.y,
-          transform: `translate(-4px,-3px) scale(${pressed ? .88 : hovering ? 1.08 : 1})`,
-          transformOrigin: '4px 3px',
+          transform: `translate(-5px,-4px) scale(${pressed ? 0.9 : hovering ? 1.06 : 1})`,
+          transformOrigin: '5px 4px',
           transition: 'transform .12s ease',
-          filter: 'drop-shadow(0 0 5px rgba(255,255,255,.7)) drop-shadow(0 0 12px rgba(255,58,143,.9)) drop-shadow(0 0 24px rgba(255,47,134,.45))',
+          filter: 'drop-shadow(0 0 4px rgba(255,255,255,.55)) drop-shadow(0 0 11px rgba(255,79,157,.75)) drop-shadow(0 0 20px rgba(255,58,145,.28))',
         }}
         aria-hidden="true"
       >
-        <svg width="31" height="39" viewBox="0 0 31 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 2.5L27.4 22.2L16.3 23.5L21.8 34.8L15.4 37.2L10.1 25.8L3 33V2.5Z" fill="#220b17" stroke="#ffd3e6" strokeWidth="1.7" strokeLinejoin="round" />
-          <path d="M5.5 7.3L22.1 20.7L13.5 21.8L17.8 30.8" stroke="#ff4f9a" strokeWidth="1.4" strokeLinecap="round" />
+        <svg width="34" height="42" viewBox="0 0 34 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="glassCursorFill" x1="5" y1="4" x2="25" y2="37" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#ffffff" stopOpacity="0.16" />
+              <stop offset="0.38" stopColor="#ffc8df" stopOpacity="0.08" />
+              <stop offset="1" stopColor="#ff5fa7" stopOpacity="0.025" />
+            </linearGradient>
+            <linearGradient id="glassCursorStroke" x1="4" y1="3" x2="27" y2="38" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#fff7fb" />
+              <stop offset="0.48" stopColor="#ffc0db" />
+              <stop offset="1" stopColor="#ff72b1" />
+            </linearGradient>
+          </defs>
+
+          <path
+            d="M4 3.5L29 23.5L17.2 24.8L22.8 36.8L16.1 39.3L10.6 27.5L4 34.4V3.5Z"
+            fill="rgba(15,6,12,.54)"
+            stroke="url(#glassCursorStroke)"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M5.5 6.2L25.6 22.1L14.8 23.4L20.3 35.1L16.9 36.4L11.5 25L5.5 31.2V6.2Z"
+            fill="url(#glassCursorFill)"
+          />
+          <path
+            d="M6.3 6.6L23.3 20.1"
+            stroke="rgba(255,255,255,.55)"
+            strokeWidth="1.05"
+            strokeLinecap="round"
+          />
+          <path
+            d="M11.7 25.4L16.7 36.2"
+            stroke="#ff7db8"
+            strokeOpacity="0.7"
+            strokeWidth="0.95"
+            strokeLinecap="round"
+          />
         </svg>
       </div>
-
-      {hovering && (
-        <div
-          className="pointer-events-none fixed z-[80] hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pink-200/40 md:block"
-          style={{ left: pos.x, top: pos.y, boxShadow: '0 0 18px rgba(255,65,150,.22), inset 0 0 14px rgba(255,92,159,.07)' }}
-          aria-hidden="true"
-        />
-      )}
     </>
   )
 }
