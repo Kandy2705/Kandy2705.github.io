@@ -64,7 +64,7 @@ const resources = {
         success: 'Your message was saved. Email delivery will run when the Supabase function is configured.',
       },
       footer: {
-        built: 'Designed & built with curiosity and a little pink glow.',
+        built: 'Pretty pixels. Smarter ideas. Built by Mẫn.',
       },
     },
   },
@@ -130,7 +130,7 @@ const resources = {
         success: 'Tin nhắn đã được lưu. Email sẽ được gửi khi Supabase Function được cấu hình.',
       },
       footer: {
-        built: 'Thiết kế & phát triển với sự tò mò và một chút ánh hồng.',
+        built: 'Pixel đẹp. Ý tưởng thông minh hơn. Được tạo nên bởi Mẫn.',
       },
     },
   },
