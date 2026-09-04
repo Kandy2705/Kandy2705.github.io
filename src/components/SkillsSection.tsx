@@ -11,10 +11,7 @@ import {
   Gamepad2,
   GitBranch,
   Glasses,
-  KanbanSquare,
   Layers3,
-  MessageSquareMore,
-  NotebookText,
   PanelsTopLeft,
   ServerCog,
   Smartphone,
@@ -51,8 +48,8 @@ function iconForCategory(category: string): LucideIcon {
   if (value.includes('ar') || value.includes('vr') || value.includes('xr')) return Glasses
   if (value.includes('web')) return PanelsTopLeft
   if (value.includes('mobile')) return Smartphone
-  if (value.includes('project management')) return KanbanSquare
-  if (value.includes('communication')) return MessageSquareMore
+  if (value.includes('project management')) return Workflow
+  if (value.includes('communication')) return UsersRound
   if (value.includes('tool')) return Wrench
   if (value.includes('devops')) return Workflow
   if (value.includes('database')) return Database
@@ -74,9 +71,8 @@ function iconForSkill(name: string): LucideIcon {
   if (value.includes('supabase') || value.includes('sql')) return Database
   if (value.includes('tailwind') || value.includes('html') || value.includes('css')) return PanelsTopLeft
   if (value.includes('figma') || value.includes('blender')) return Layers3
-  if (value.includes('notion')) return NotebookText
-  if (value.includes('jira')) return KanbanSquare
-  if (value.includes('slack') || value.includes('teams')) return MessageSquareMore
+  if (value.includes('notion') || value.includes('jira')) return Workflow
+  if (value.includes('slack') || value.includes('teams')) return UsersRound
   return Sparkles
 }
 
