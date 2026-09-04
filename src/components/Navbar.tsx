@@ -10,6 +10,7 @@ const links = [
   ['/about', 'nav.about'],
   ['/projects', 'nav.projects'],
   ['/experience', 'nav.experience'],
+  ['/education', 'nav.education'],
   ['/blog', 'nav.blog'],
   ['/#contact', 'nav.contact'],
 ] as const
@@ -31,7 +32,7 @@ export function Navbar() {
         <div className="glass-panel flex h-[68px] items-center justify-between rounded-2xl px-4 sm:px-6">
           <Logo />
 
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav className="hidden items-center gap-5 lg:flex">
             {links.map(([to, key]) => {
               const isHash = to.includes('#')
               if (isHash) {
