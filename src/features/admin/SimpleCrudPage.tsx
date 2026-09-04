@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Pencil, Plus, Save, Trash2, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
-export type FieldType = 'text' | 'textarea' | 'date' | 'number' | 'checkbox' | 'tags' | 'localizedLines'
+export type FieldType = 'text' | 'textarea' | 'date' | 'number' | 'checkbox' | 'tags' | 'localizedLines' | 'select'
 
 export interface CrudField {
   key: string
@@ -10,6 +10,10 @@ export interface CrudField {
   type?: FieldType
   placeholder?: string
   required?: boolean
+  min?: number
+  max?: number
+  step?: number
+  options?: Array<{ value: string; label: string }>
 }
 
 interface Props {
@@ -47,7 +51,7 @@ function normalizeForSave(form: Record<string, any>, fields: CrudField[]) {
 }
 
 export function SimpleCrudPage({ table, title, subtitle, fields, displayField, orderBy = 'created_at' }: Props) {
-  const empty = useMemo(() => Object.fromEntries(fields.map((field) => [field.key, field.type === 'checkbox' ? false : ''])), [fields])
+  const empty = useMemo(() => Object.fromEntries(fields.map((field) => [field.key, field.type === 'checkbox' ? false : field.type === 'select' ? field.options?.[0]?.value || '' : ''])), [fields])
   const [rows, setRows] = useState<Record<string, any>[]>([])
   const [form, setForm] = useState<Record<string, any>>(empty)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -104,8 +108,11 @@ export function SimpleCrudPage({ table, title, subtitle, fields, displayField, o
               if (field.type === 'checkbox') {
                 return <label key={field.key} className="flex items-center gap-3 text-sm text-white/60"><input type="checkbox" checked={Boolean(form[field.key])} onChange={(e) => setForm((f) => ({ ...f, [field.key]: e.target.checked }))} /> {field.label}</label>
               }
+              if (field.type === 'select') {
+                return <label key={field.key} className="admin-label">{field.label}<select value={form[field.key] ?? ''} onChange={(e) => setForm((f) => ({ ...f, [field.key]: e.target.value }))} className="admin-input" required={field.required}>{field.options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
+              }
               const common = { value: form[field.key] ?? '', onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm((f) => ({ ...f, [field.key]: e.target.value })), placeholder: field.placeholder, required: field.required, className: 'admin-input' }
-              return <label key={field.key} className="admin-label">{field.label}{field.type === 'textarea' || field.type === 'localizedLines' ? <textarea {...common} rows={field.type === 'localizedLines' ? 7 : 5} /> : <input {...common} type={field.type === 'date' ? 'date' : field.type === 'number' ? 'number' : 'text'} />}{field.type === 'tags' && <span className="text-[11px] text-white/30">Comma separated</span>}{field.type === 'localizedLines' && <span className="text-[11px] text-white/30">One per line: English || Vietnamese</span>}</label>
+              return <label key={field.key} className="admin-label">{field.label}{field.type === 'textarea' || field.type === 'localizedLines' ? <textarea {...common} rows={field.type === 'localizedLines' ? 7 : 5} /> : <input {...common} min={field.min} max={field.max} step={field.step} type={field.type === 'date' ? 'date' : field.type === 'number' ? 'number' : 'text'} />}{field.type === 'tags' && <span className="text-[11px] text-white/30">Comma separated</span>}{field.type === 'localizedLines' && <span className="text-[11px] text-white/30">One per line: English || Vietnamese</span>}</label>
             })}
           </div>
           <div className="mt-5 flex items-center gap-3"><button disabled={saving} className="neon-button inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold"><Save size={16} /> {saving ? 'Saving...' : 'Save & publish'}</button>{message && <span className="text-xs text-white/42">{message}</span>}</div>
