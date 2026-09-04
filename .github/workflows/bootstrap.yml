@@ -1,34 +1,13 @@
 name: Bootstrap portfolio source
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.bootstrap/**'
-      - '.github/workflows/bootstrap.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  unpack:
+  paused:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Restore portfolio source
-        run: |
-          cat .bootstrap/part-00 .bootstrap/part-01 .bootstrap/fix-020-0 .bootstrap/fix-020-1 .bootstrap/repair-02-1 .bootstrap/fix-022-0 .bootstrap/fix-022-1 .bootstrap/repair-03-0 .bootstrap/repair-03-1 .bootstrap/repair-03-2 .bootstrap/part-04 .bootstrap/part-05 .bootstrap/part-06 > /tmp/portfolio-source.b64
-          base64 --decode /tmp/portfolio-source.b64 > /tmp/portfolio-source.tar.gz
-          echo "Expected archive sha256: 1826fa77bece92de34f09a50310454e98705449009483a2c1ce0b742e91eb358"
-          sha256sum /tmp/portfolio-source.tar.gz
-          tar -xzf /tmp/portfolio-source.tar.gz
-          rm -rf .bootstrap
-          rm -f .github/workflows/bootstrap.yml
-      - name: Commit source
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Add portfolio source"
-          git push
+      - run: echo "Bootstrap is disabled. Portfolio source will be committed directly."
