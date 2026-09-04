@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ImagePlus, Pencil, Save, Trash2, X } from 'lucide-react'
+import { ExternalLink, ImagePlus, Pencil, Save, Trash2, X } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { uploadMediaMany } from './adminUtils'
 
@@ -10,6 +10,7 @@ const empty = {
   award_date: '',
   description_en: '',
   description_vi: '',
+  source_url: '',
   proof_image_urls: [] as string[],
 }
 
@@ -56,6 +57,7 @@ export function AdminAwardsPage() {
       award_date: form.award_date || null,
       description_en: form.description_en || null,
       description_vi: form.description_vi || null,
+      source_url: form.source_url || null,
       proof_image_urls: form.proof_image_urls,
     }
 
@@ -79,6 +81,7 @@ export function AdminAwardsPage() {
       award_date: row.award_date || '',
       description_en: row.description_en || '',
       description_vi: row.description_vi || '',
+      source_url: row.source_url || '',
       proof_image_urls: row.proof_image_urls || [],
     })
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -96,7 +99,7 @@ export function AdminAwardsPage() {
       <div>
         <div className="text-xs uppercase tracking-[.22em] text-pink-300">Proof enabled</div>
         <h1 className="mt-2 font-display text-5xl font-semibold">Awards</h1>
-        <p className="mt-2 text-sm text-white/42">Upload one or multiple images as proof: award certificates, merit papers, event photos, screenshots, or other evidence.</p>
+        <p className="mt-2 text-sm text-white/42">Upload proof images and optionally add a public source link such as an official result page or announcement post.</p>
       </div>
 
       <div className="mt-7 grid gap-6 xl:grid-cols-[1fr_.85fr]">
@@ -119,6 +122,10 @@ export function AdminAwardsPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <label className="admin-label">Description — English<textarea rows={4} className="admin-input" value={form.description_en} onChange={(e) => setForm((f) => ({ ...f, description_en: e.target.value }))} /></label>
             <label className="admin-label">Description — Vietnamese<textarea rows={4} className="admin-input" value={form.description_vi} onChange={(e) => setForm((f) => ({ ...f, description_vi: e.target.value }))} /></label>
+          </div>
+
+          <div className="mt-4">
+            <label className="admin-label">Source / announcement URL<input className="admin-input" value={form.source_url} onChange={(e) => setForm((f) => ({ ...f, source_url: e.target.value }))} placeholder="https://..." /></label>
           </div>
 
           <div className="mt-5 rounded-2xl border border-white/7 bg-white/[.02] p-4">
@@ -160,7 +167,10 @@ export function AdminAwardsPage() {
               <div key={row.id} className="flex items-center justify-between gap-3 rounded-xl border border-white/7 p-3">
                 <div className="min-w-0">
                   <div className="truncate text-sm">{row.title_en}</div>
-                  <div className="mt-1 text-xs text-white/30">Proof images: {(row.proof_image_urls || []).length}</div>
+                  <div className="mt-1 flex items-center gap-3 text-xs text-white/30">
+                    <span>Proof images: {(row.proof_image_urls || []).length}</span>
+                    {row.source_url && <span className="inline-flex items-center gap-1 text-pink-200/60"><ExternalLink size={11} /> Source</span>}
+                  </div>
                 </div>
                 <div className="flex gap-2">
                   <button onClick={() => edit(row)} className="outline-button grid h-9 w-9 place-items-center rounded-lg"><Pencil size={15} /></button>
