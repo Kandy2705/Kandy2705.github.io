@@ -18,8 +18,19 @@ jobs:
       - uses: actions/checkout@v4
       - name: Restore portfolio source
         run: |
-          sha256sum .bootstrap/part-*
-          cat .bootstrap/part-* > /tmp/portfolio-source.b64
+          cat \
+            .bootstrap/part-00 \
+            .bootstrap/part-01 \
+            .bootstrap/repair-02-0 \
+            .bootstrap/repair-02-1 \
+            .bootstrap/repair-02-2 \
+            .bootstrap/repair-03-0 \
+            .bootstrap/repair-03-1 \
+            .bootstrap/repair-03-2 \
+            .bootstrap/part-04 \
+            .bootstrap/part-05 \
+            .bootstrap/part-06 \
+            > /tmp/portfolio-source.b64
           base64 --decode /tmp/portfolio-source.b64 > /tmp/portfolio-source.tar.gz
           sha256sum /tmp/portfolio-source.tar.gz
           tar -xzf /tmp/portfolio-source.tar.gz
