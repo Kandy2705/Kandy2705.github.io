@@ -1,5 +1,22 @@
 import { SimpleCrudPage } from './SimpleCrudPage'
 
+const skillCategoryOptions = [
+  'Language',
+  'Engine',
+  'AR/VR',
+  'Web',
+  'Mobile',
+  'Tools',
+  'Project Management',
+  'Communication',
+  'DevOps',
+  'Database',
+  'IDE',
+  'Principle',
+  'Soft Skills',
+  'Other',
+].map((value) => ({ value, label: value }))
+
 export function AdminExperiencePage() {
   return <SimpleCrudPage table="experiences" title="Experience" displayField="company" fields={[
     { key: 'company', label: 'Company', required: true },
@@ -44,9 +61,12 @@ export function AdminEducationPage() {
 }
 
 export function AdminSkillsPage() {
-  return <SimpleCrudPage table="skills" title="Skills" displayField="name" orderBy="sort_order" fields={[
+  return <SimpleCrudPage table="skills" title="Skills" subtitle="Categories are fixed to keep the public layout consistent. Add EN/VI descriptions so visitors can hover a skill and understand what it is." displayField="name" orderBy="sort_order" fields={[
     { key: 'name', label: 'Skill', required: true },
-    { key: 'category', label: 'Category', placeholder: 'Game Development / Programming Languages / AR/VR...' },
+    { key: 'category', label: 'Category', type: 'select', required: true, options: skillCategoryOptions },
+    { key: 'description_en', label: 'Description — English', type: 'textarea', placeholder: 'What this tool/skill is and how it is used...' },
+    { key: 'description_vi', label: 'Description — Vietnamese', type: 'textarea', placeholder: 'Mô tả ngắn để người xem hiểu skill này là gì...' },
+    { key: 'icon_key', label: 'Icon key', placeholder: 'Optional: gamepad / code / database / notebook...' },
     { key: 'sort_order', label: 'Sort order', type: 'number' },
   ]} />
 }
