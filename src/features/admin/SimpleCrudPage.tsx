@@ -23,6 +23,7 @@ interface Props {
   fields: CrudField[]
   displayField: string
   orderBy?: string
+  uniqueBy?: string
 }
 
 function normalizeForEdit(row: Record<string, any>, fields: CrudField[]) {
@@ -50,7 +51,7 @@ function normalizeForSave(form: Record<string, any>, fields: CrudField[]) {
   return out
 }
 
-export function SimpleCrudPage({ table, title, subtitle, fields, displayField, orderBy = 'created_at' }: Props) {
+export function SimpleCrudPage({ table, title, subtitle, fields, displayField, orderBy = 'created_at', uniqueBy }: Props) {
   const empty = useMemo(() => Object.fromEntries(fields.map((field) => [field.key, field.type === 'checkbox' ? false : field.type === 'select' ? field.options?.[0]?.value || '' : ''])), [fields])
   const [rows, setRows] = useState<Record<string, any>[]>([])
   const [form, setForm] = useState<Record<string, any>>(empty)
@@ -72,15 +73,50 @@ export function SimpleCrudPage({ table, title, subtitle, fields, displayField, o
     event.preventDefault()
     setSaving(true)
     setMessage('')
+
     const payload = normalizeForSave(form, fields)
-    const result = editingId
-      ? await supabase.from(table).update(payload).eq('id', editingId)
-      : await supabase.from(table).insert(payload)
+    let updatedExisting = false
+    let result: { error: any }
+
+    if (editingId) {
+      result = await supabase.from(table).update(payload).eq('id', editingId)
+    } else if (uniqueBy && payload[uniqueBy] !== null && payload[uniqueBy] !== undefined && String(payload[uniqueBy]).trim() !== '') {
+      const { data: existing, error: findError } = await supabase
+        .from(table)
+        .select('id')
+        .eq(uniqueBy, payload[uniqueBy])
+        .maybeSingle()
+
+      if (findError) {
+        setSaving(false)
+        setMessage(findError.message)
+        return
+      }
+
+      if (existing?.id) {
+        updatedExisting = true
+        result = await supabase.from(table).update(payload).eq('id', existing.id)
+      } else {
+        result = await supabase.from(table).insert(payload)
+      }
+    } else {
+      result = await supabase.from(table).insert(payload)
+    }
+
     setSaving(false)
-    if (result.error) return setMessage(result.error.message)
+
+    if (result.error) {
+      if (result.error.code === '23505') {
+        setMessage('This item already exists. Use the pencil button on the right to edit it.')
+        return
+      }
+      setMessage(result.error.message)
+      return
+    }
+
     setEditingId(null)
     setForm(empty)
-    setMessage('Saved and published.')
+    setMessage(updatedExisting ? 'Already existed — updated and published.' : 'Saved and published.')
     await load()
   }
 
