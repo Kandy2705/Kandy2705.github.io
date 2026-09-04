@@ -1,0 +1,144 @@
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+
+const resources = {
+  en: {
+    translation: {
+      nav: {
+        home: 'Home',
+        about: 'About',
+        projects: 'Projects',
+        experience: 'Experience',
+        blog: 'Blog',
+        contact: 'Contact',
+      },
+      hero: {
+        hello: "Hello, I'm",
+        viewWork: 'View My Work',
+        downloadCv: 'Download CV',
+        available: 'Open to meaningful projects',
+      },
+      common: {
+        all: 'All',
+        readMore: 'Read more',
+        viewProject: 'View project',
+        viewAll: 'View all',
+        current: 'Present',
+        technologies: 'Technologies',
+        role: 'Role',
+        team: 'Team',
+        status: 'Status',
+        views: 'views',
+        back: 'Back',
+        search: 'Search',
+      },
+      sections: {
+        about: 'About Me',
+        projects: 'Featured Projects',
+        skills: 'Skills & Expertise',
+        experience: 'Experience',
+        education: 'Education',
+        certificates: 'Certificates',
+        awards: 'Awards',
+        research: 'Research',
+        languages: 'Languages',
+        blog: 'Latest Notes',
+        contact: "Let's Connect",
+      },
+      projects: {
+        eyebrow: 'Browse projects by category',
+        searchPlaceholder: 'Search projects, technologies...',
+        empty: 'No projects in this category yet.',
+        allProjects: 'All Projects',
+      },
+      contact: {
+        title: 'Have a project in mind?',
+        subtitle: "I'd love to hear from you.",
+        name: 'Name',
+        email: 'Email',
+        subject: 'Subject',
+        message: 'Message',
+        send: 'Send Message',
+        sending: 'Sending...',
+        success: 'Your message was saved. Email delivery will run when the Supabase function is configured.',
+      },
+      footer: {
+        built: 'Designed & built with curiosity and a little pink glow.',
+      },
+    },
+  },
+  vi: {
+    translation: {
+      nav: {
+        home: 'Trang chủ',
+        about: 'Giới thiệu',
+        projects: 'Dự án',
+        experience: 'Kinh nghiệm',
+        blog: 'Blog',
+        contact: 'Liên hệ',
+      },
+      hero: {
+        hello: 'Xin chào, mình là',
+        viewWork: 'Xem dự án',
+        downloadCv: 'Tải CV',
+        available: 'Sẵn sàng cho những dự án thú vị',
+      },
+      common: {
+        all: 'Tất cả',
+        readMore: 'Đọc thêm',
+        viewProject: 'Xem dự án',
+        viewAll: 'Xem tất cả',
+        current: 'Hiện tại',
+        technologies: 'Công nghệ',
+        role: 'Vai trò',
+        team: 'Nhóm',
+        status: 'Trạng thái',
+        views: 'lượt xem',
+        back: 'Quay lại',
+        search: 'Tìm kiếm',
+      },
+      sections: {
+        about: 'Về mình',
+        projects: 'Dự án nổi bật',
+        skills: 'Kỹ năng & chuyên môn',
+        experience: 'Kinh nghiệm',
+        education: 'Học vấn',
+        certificates: 'Chứng chỉ',
+        awards: 'Giải thưởng',
+        research: 'Nghiên cứu',
+        languages: 'Ngôn ngữ',
+        blog: 'Bài viết mới',
+        contact: 'Kết nối với mình',
+      },
+      projects: {
+        eyebrow: 'Khám phá dự án theo danh mục',
+        searchPlaceholder: 'Tìm dự án, công nghệ...',
+        empty: 'Chưa có dự án trong danh mục này.',
+        allProjects: 'Tất cả dự án',
+      },
+      contact: {
+        title: 'Bạn có một dự án thú vị?',
+        subtitle: 'Mình rất muốn nghe về nó.',
+        name: 'Tên',
+        email: 'Email',
+        subject: 'Chủ đề',
+        message: 'Tin nhắn',
+        send: 'Gửi tin nhắn',
+        sending: 'Đang gửi...',
+        success: 'Tin nhắn đã được lưu. Email sẽ được gửi khi Supabase Function được cấu hình.',
+      },
+      footer: {
+        built: 'Thiết kế & phát triển với sự tò mò và một chút ánh hồng.',
+      },
+    },
+  },
+}
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng: localStorage.getItem('portfolio-lang') || 'en',
+  fallbackLng: 'en',
+  interpolation: { escapeValue: false },
+})
+
+export default i18n

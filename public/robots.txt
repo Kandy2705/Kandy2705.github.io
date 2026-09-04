@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kandy2705.github.io/sitemap.xml
