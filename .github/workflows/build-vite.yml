@@ -16,17 +16,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 24
 
-      - name: Add profile photo from repository blob
-        run: |
-          mkdir -p public/images/profile
-          curl -fsSL https://api.github.com/repos/Kandy2705/Kandy2705.github.io/git/blobs/18b7defea7275116a120406f95c25aab1b5190c8 \
-            | python3 -c "import sys,json,base64; d=json.load(sys.stdin); sys.stdout.buffer.write(base64.b64decode(d['content']))" \
-            > public/images/profile/profile.webp
-
-      - run: npm ci
+      - run: npm install
       - run: cp vite-index.html index.html
       - run: npm run build
       - run: rsync -a dist/ ./
